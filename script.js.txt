@@ -1,0 +1,96 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('#feedback-form');
+    const successPopup = document.getElementById('success-popup');
+    const homeButton = document.getElementById('home-button');
+    const tekrarButton = document.getElementById('tekrar-degerlendir');
+    const googleReviewButton = document.getElementById('google-review-button');
+    const ratingWarning = document.getElementById('rating-warning');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Formun varsayılan submit işlemini engelle
+
+        // Genel deneyim puanını kontrol et
+        const rating = document.querySelector('button.rating-btn.selected')?.dataset.value;
+        if (!rating) {
+            ratingWarning.classList.remove('hidden'); // Uyarıyı göster
+            return;
+        } else {
+            ratingWarning.classList.add('hidden'); // Uyarıyı gizle
+        }
+
+        // Kriterlerin seçimlerini kontrol et
+        const criteriaButtons = document.querySelectorAll('.criteria-buttons button.selected');
+        const allCriteriaFirstButtonSelected = Array.from(criteriaButtons).every(btn => 
+            (btn.dataset.value === 'excellent' && btn.parentElement.parentElement.querySelector('.criteria-title').textContent.includes('Lezzet')) ||
+            (btn.dataset.value === 'enjoyable' && btn.parentElement.parentElement.querySelector('.criteria-title').textContent.includes('Ortam')) ||
+            (btn.dataset.value === 'friendly' && btn.parentElement.parentElement.querySelector('.criteria-title').textContent.includes('Personel')) ||
+            (btn.dataset.value === 'successful' && btn.parentElement.parentElement.querySelector('.criteria-title').textContent.includes('Servis')) ||
+            (btn.dataset.value === 'spotless' && btn.parentElement.parentElement.querySelector('.criteria-title').textContent.includes('Temizlik'))
+        );
+
+        if (rating === '5' && allCriteriaFirstButtonSelected) {
+            googleReviewButton.classList.remove('hidden');
+        } else {
+            googleReviewButton.classList.add('hidden');
+        }
+
+        // Form verilerini topla
+        const formData = {
+            'Genel Deneyim': rating,
+            'Lezzet': document.querySelector('.criteria-title:contains("Lezzet") + .criteria-buttons button.selected')?.dataset.value || '',
+            'Ortam': document.querySelector('.criteria-title:contains("Ortam") + .criteria-buttons button.selected')?.dataset.value || '',
+            'Personel': document.querySelector('.criteria-title:contains("Personel") + .criteria-buttons button.selected')?.dataset.value || '',
+            'Servis': document.querySelector('.criteria-title:contains("Servis") + .criteria-buttons button.selected')?.dataset.value || '',
+            'Temizlik': document.querySelector('.criteria-title:contains("Temizlik") + .criteria-buttons button.selected')?.dataset.value || '',
+            'Ekstra Düşünceler': document.querySelector('textarea').value
+        };
+
+        // Form verilerini gönder
+        fetch('https://script.google.com/macros/s/AKfycbw7xXp00mEFt80YX1UD7KBVrEERybMGThr-NtudgHLb_QSsR-AvfQgDAXyLzTuw9xBm/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Başarı pop-up'ını göster
+            successPopup.classList.remove('hidden');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+    tekrarButton.addEventListener('click', () => {
+        // Ana sayfaya yönlendirme işlemi
+        window.location.href = 'index.html'; // Ankete geri döner
+    });
+
+    homeButton.addEventListener('click', () => {
+        // Ana sayfaya yönlendirme işlemi
+        window.location.href = 'https://frescomakarna.com/'; // Ana sayfanızın URL'sini buraya yazın
+    });
+
+    googleReviewButton.addEventListener('click', () => {
+        // Google değerlendirme sayfasına yönlendirme işlemi
+        window.open('https://search.google.com/local/writereview?placeid=ChIJhfWYE54tuRQRavQi8Qzomzs'); // Buraya Google değerlendirme URL'nizi ekleyin
+    });
+
+    // Rating ve criteria butonlarının seçilme işlemleri
+    document.querySelectorAll('.rating-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('.rating-btn').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        });
+    });
+
+    document.querySelectorAll('.criteria-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            button.parentElement.querySelectorAll('.criteria-btn').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        });
+    });
+});
