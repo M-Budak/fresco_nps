@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="logo.png" alt="Logo" class="logo-img">
+        </div>
+        
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="showModal('modal1')">🔒 Ürün Ekle</button>
+            <button class="btn btn-secondary" onclick="location.href='https://docs.google.com/spreadsheets/d/1HHlDEC0XFvWjIrkWeBsEee4NsRR469msmezS69htQwQ/edit?gid=1127018783#gid=1127018783'">Ürün Güncelle</button>
+            <button class="btn btn-primary" onclick="showModal('modal3')">🔒 Ürün Sil</button>
+            <button class="btn btn-secondary" onclick="showPopup()">Anket Sonuçları</button>
+        </div>
+    </div>
+
+    <!-- Modals for Ürün Ekle, Ürün Güncelle, Ürün Sil -->
+    <div id="modal1" class="modal" onclick="closeModal(event, 'modal1')">
+        <div class="modal-content">
+            <p>Çok Yakında Eklenecek. Lütfen Güncelleme seçeneği ile devam ediniz.</p>
+            <button class="modal-btn" onclick="location.href='https://docs.google.com/spreadsheets/d/1HHlDEC0XFvWjIrkWeBsEee4NsRR469msmezS69htQwQ/edit?gid=1127018783#gid=1127018783'">Ürün Güncelle</button>
+        </div>
+    </div>
+    
+    <div id="modal2" class="modal" onclick="closeModal(event, 'modal2')">
+        <div class="modal-content">
+            <p>Çok Yakında Eklenecek. Lütfen Güncelleme seçeneği ile devam ediniz.</p>
+            <button class="modal-btn" onclick="location.href='https://docs.google.com/spreadsheets/d/1HHlDEC0XFvWjIrkWeBsEee4NsRR469msmezS69htQwQ/edit?gid=1127018783#gid=1127018783'">Ürün Güncelle</button>
+        </div>
+    </div>
+    
+    <div id="modal3" class="modal" onclick="closeModal(event, 'modal3')">
+        <div class="modal-content">
+            <p>Çok Yakında Eklenecek. Lütfen Güncelleme seçeneği ile devam ediniz.</p>
+            <button class="modal-btn" onclick="location.href='https://docs.google.com/spreadsheets/d/1HHlDEC0XFvWjIrkWeBsEee4NsRR469msmezS69htQwQ/edit?gid=1127018783#gid=1127018783'">Ürün Güncelle</button>
+        </div>
+    </div>
+    
+
+    <!-- Popup for Anket Sonuçları -->
+    <div id="popup" class="popup" onclick="closePopup(event)">
+        <div class="popup-content">
+            <p>Hangi Cihazdan İnceliyorsunuz?</p>
+            <button onclick="location.href='tablet-link.html'" class="popup-btn">Tablet</button>
+            <button onclick="location.href='https://lookerstudio.google.com/s/uD_FCRzSd9g'" class="popup-btn">Mobil</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
